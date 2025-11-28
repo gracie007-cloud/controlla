@@ -193,6 +193,16 @@ class InputSimulator {
         // Show the system permission dialog
         let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true]
         _ = AXIsProcessTrustedWithOptions(options)
+
+        // Force macOS to recognize the app by attempting to post an accessibility event
+        // This triggers the system to add the app to the Accessibility list automatically
+        // We'll post a null/no-op mouse move to current position (harmless but triggers recognition)
+        if let currentEvent = CGEvent(source: nil) {
+            let currentLocation = currentEvent.location
+            if let moveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: currentLocation, mouseButton: .left) {
+                moveEvent.post(tap: .cghidEventTap)
+            }
+        }
     }
 
     static func hasAccessibilityPermissions() -> Bool {

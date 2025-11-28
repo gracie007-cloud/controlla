@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import UIKit
+#endif
 
 struct ContentView: View {
     @StateObject private var networkManager = NetworkManager()
@@ -254,6 +257,7 @@ struct ReceiverView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var permissionCheckTimer: Timer?
     @State private var showAccessibilityAlert = false
+    @State private var showDetailedHelp = false
 
     var body: some View {
         ZStack {
@@ -278,47 +282,60 @@ struct ReceiverView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
 
-            // Connection status indicator
-            if networkManager.needsAccessibilityPermissions {
-                // Accessibility permissions needed
+            // Permission Status Indicator (always visible)
+            HStack(spacing: 12) {
+                Text("Accessibility Access")
+                    .font(.system(size: 16))
+                    .foregroundColor(.white)
+
+                // Toggle Switch
                 Button(action: {
-                    InputSimulator.requestAccessibilityPermissions()
-                    showAccessibilityAlert = true
-                }) {
-                    HStack(spacing: 10) {
-                        Image(systemName: "lock.shield")
-                            .font(.system(size: 16))
-                        Text("Enable Accessibility")
-                            .font(.system(size: 16, weight: .semibold))
+                    if networkManager.needsAccessibilityPermissions {
+                        InputSimulator.requestAccessibilityPermissions()
+                        // Open System Settings directly (macOS only)
+                        #if os(macOS)
+                        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+                            NSWorkspace.shared.open(url)
+                        }
+                        #endif
                     }
-                    .foregroundColor(Color(red: 0.5, green: 0.5, blue: 1.0))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 14)
-                    .background(Color.white)
-                    .cornerRadius(12)
+                }) {
+                    ZStack {
+                        // Background
+                        RoundedRectangle(cornerRadius: 13)
+                            .fill(networkManager.needsAccessibilityPermissions ?
+                                Color.red.opacity(0.7) : Color.green.opacity(0.7))
+                            .frame(width: 50, height: 26)
+
+                        // Circle
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 20, height: 20)
+                            .offset(x: networkManager.needsAccessibilityPermissions ? -12 : 12)
+                    }
                 }
                 .buttonStyle(.plain)
-                .alert("Enable Accessibility Access", isPresented: $showAccessibilityAlert) {
-                    Button("OK", role: .cancel) { }
-                } message: {
-                    Text("""
-                    System Settings should automatically open.
+                .animation(.easeInOut(duration: 0.2), value: networkManager.needsAccessibilityPermissions)
 
-                    If AirControlla doesn't appear in the Accessibility list:
-
-                    1. Open System Settings
-                    2. Go to Privacy & Security → Accessibility
-                    3. Click the "+" button at the bottom
-                    4. Search for and select "AirControlla"
-                    5. Click Open
-                    6. Toggle the permission ON
-
-                    Note: macOS 26 Tahoe has a known issue where apps don't automatically appear in the Accessibility list. Use the "+" button to manually add AirControlla.
-
-                    After enabling accessibility, the connection will automatically restart. Make sure both devices are on the same WiFi network.
-                    """)
+                Text(networkManager.needsAccessibilityPermissions ? "Denied" : "Allowed")
+                    .font(.system(size: 16))
+                    .foregroundColor(.white)
+            }
+            .alert("Enable Accessibility Access", isPresented: $showAccessibilityAlert) {
+                Button("Open System Settings") {
+                    #if os(macOS)
+                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+                        NSWorkspace.shared.open(url)
+                    }
+                    #endif
                 }
-            } else if networkManager.isControllerConnected {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("If the system prompt didn't appear, click 'Open System Settings' to go to Privacy & Security → Accessibility and enable the toggle for Controlla.\n\nThe connection will automatically restart after you grant permission.")
+            }
+
+            // Connection status indicator
+            if networkManager.isControllerConnected {
                 HStack(spacing: 10) {
                     Circle()
                         .fill(Color.green)
@@ -327,7 +344,7 @@ struct ReceiverView: View {
                         .foregroundColor(.white)
                         .font(.headline)
                 }
-            } else if networkManager.isReceiving {
+            } else if networkManager.isReceiving && !networkManager.needsAccessibilityPermissions {
                 HStack(spacing: 10) {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -339,6 +356,40 @@ struct ReceiverView: View {
             }
 
             Spacer()
+
+            // Subtle help link for troubleshooting (only show if permissions are denied)
+            if networkManager.needsAccessibilityPermissions {
+                Button(action: {
+                    showDetailedHelp = true
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 12))
+                        Text("Experiencing issues on macOS Tahoe? Click here")
+                            .font(.system(size: 12))
+                    }
+                    .foregroundColor(.white.opacity(0.5))
+                }
+                .buttonStyle(.plain)
+                .alert("Detailed Setup Instructions", isPresented: $showDetailedHelp) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("""
+                    If Controlla doesn't appear in the Accessibility list:
+
+                    1. Open System Settings
+                    2. Go to Privacy & Security → Accessibility
+                    3. Click the "+" button at the bottom
+                    4. Search for and select "Controlla"
+                    5. Click Open
+                    6. Toggle the permission ON
+
+                    Note: macOS 15 Tahoe has a known issue where apps don't automatically appear in the Accessibility list. Use the "+" button to manually add Controlla.
+
+                    After enabling accessibility, the connection will automatically restart. Make sure both devices are on the same WiFi network.
+                    """)
+                }
+            }
             }
 
             // Refresh button overlay (doesn't affect centered content)
@@ -371,8 +422,8 @@ struct ReceiverView: View {
             }
         }
         .onAppear {
-            // Start receiver immediately
-            networkManager.startReceiver()
+            // Receiver already starts in NetworkManager.init() via updateServices()
+            // Just set up the permission check timer
 
             // Check permissions every 2 seconds when shown
             permissionCheckTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
@@ -420,6 +471,10 @@ struct ControlModeView: View {
     @Binding var showPaywall: Bool
     @State private var joystickOffset = CGSize.zero
     @FocusState private var isTextEditorFocused: Bool
+
+    // Secret unlock code tracking
+    @State private var secretSequence: [String] = []
+    private let secretCode = ["L", "L", "R", "R", "L", "R", "L", "R"]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -575,6 +630,9 @@ struct ControlModeView: View {
                     HStack {
                         Spacer()
                         Button(action: {
+                            // Track secret sequence
+                            trackSecretInput("R")
+
                             if let device = selectedDevice {
                                 networkManager.sendMouseClick(button: "right", to: device)
                             }
@@ -595,6 +653,9 @@ struct ControlModeView: View {
                     // L Button (Left Click) - Bottom, offset left
                     HStack {
                         Button(action: {
+                            // Track secret sequence
+                            trackSecretInput("L")
+
                             if let device = selectedDevice {
                                 networkManager.sendMouseClick(button: "left", to: device)
                             }
@@ -622,6 +683,34 @@ struct ControlModeView: View {
         .onTapGesture {
             // Dismiss keyboard when tapping outside text editor
             isTextEditorFocused = false
+        }
+    }
+
+    // MARK: - Secret Code Tracking
+    private func trackSecretInput(_ input: String) {
+        // Add to sequence
+        secretSequence.append(input)
+
+        // Keep only last 8 inputs
+        if secretSequence.count > 8 {
+            secretSequence.removeFirst()
+        }
+
+        // Check if sequence matches secret code
+        if secretSequence == secretCode && !storeManager.secretUnlocked {
+            // Set the secret unlock flag (persists until force-close)
+            storeManager.secretUnlocked = true
+
+            // Update pro status
+            Task {
+                await storeManager.updateProStatus()
+            }
+
+            // Haptic feedback only - keep it hidden (iOS only)
+            #if os(iOS)
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+            #endif
         }
     }
 

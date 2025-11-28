@@ -24,16 +24,14 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>AirControlla</string>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon.icns</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>12</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

@@ -16,6 +16,7 @@ class StoreManager: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var products: [Product] = []
     @Published var purchasedSubscriptions: [Product] = []
+    @Published var secretUnlocked: Bool = false  // Secret unlock code - persists until force-close
 
     // MARK: - Product IDs
     // NOTE: These must match your App Store Connect configuration
@@ -146,6 +147,15 @@ class StoreManager: ObservableObject {
 
     // MARK: - Pro Status
     func updateProStatus() async {
+        // Check secret unlock first
+        if secretUnlocked {
+            DispatchQueue.main.async {
+                self.isPro = true
+                print("🔓 Pro features unlocked (secret code)")
+            }
+            return
+        }
+
         var isProUser = false
 
         // Check for active subscriptions

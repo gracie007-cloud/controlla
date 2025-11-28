@@ -2,6 +2,16 @@
 
 Controlla turns your iPhone or iPad into a wireless keyboard and mouse for your Mac or Windows PC over WiFi. Control your computer from anywhere in the room with smooth joystick navigation, text input, and mouse clicks.
 
+[![App Store](https://img.shields.io/badge/App_Store-Download-blue?style=flat&logo=apple)](https://apps.apple.com/app/controlla)
+
+## Screenshots
+
+<p align="center">
+  <img src="deployment/screenshots/en-US/1_iphone67-1.png" width="250" alt="Controller View">
+  <img src="deployment/screenshots/en-US/1_iphone67-2.png" width="250" alt="Device Selection">
+  <img src="deployment/screenshots/en-US/1_iphone67-3.png" width="250" alt="Connected">
+</p>
+
 ## Features
 
 - **Virtual Joystick Mouse Control** - Smooth, game-controller-like cursor movement
