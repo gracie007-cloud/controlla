@@ -40,6 +40,44 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 
 Output: `bin/Release/net8.0-windows/win-x64/publish/AirControlla.exe`
 
+### Building MSIX Package for Microsoft Store
+
+To build the MSIX package for Microsoft Store submission:
+
+```powershell
+.\build-msix.ps1
+```
+
+This script will:
+1. Build the Release version of the app
+2. Locate Windows SDK tools (makeappx.exe)
+3. Prepare the package directory with manifest and assets
+4. Create the MSIX package at `AirControllaWindows\bin\Release\AirControlla.msix`
+
+**Requirements:**
+- .NET 8.0 SDK
+- Windows SDK (for makeappx.exe)
+- PowerShell
+
+After building, copy the MSIX to the releases folder and upload to Partner Center.
+
+## Version History
+
+### v1.0.4 (2024-12-11)
+- **Fixed**: Text input reliability issue when typing fast and sending multiple messages
+- **Fixed**: HTTP request batching bug that caused 80% of text messages to fail
+- Improved JSON parsing to handle batched TCP requests properly
+
+### v1.0.3 (2024-12-01)
+- Microsoft Store release
+- Performance improvements
+
+### v1.0.2 (2024-11-17)
+- Bug fixes and improvements
+
+### v1.0.1 (2024-11-17)
+- First public release
+
 ## NuGet Packages
 
 The project uses:

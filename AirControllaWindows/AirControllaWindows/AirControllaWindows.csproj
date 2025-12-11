@@ -10,7 +10,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyName>AirControlla</AssemblyName>
     <Product>AirControlla for Windows</Product>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
     <Authors>Christian Okeke</Authors>
     <Company>Christian Okeke</Company>
     <Description>Control your Windows PC from your iPhone</Description>
@@ -20,8 +20,9 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <PublishAot>false</PublishAot>
     <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
-    <GenerateTestCertificate>false</GenerateTestCertificate>
+    <AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+    <PackageCertificateKeyFile>AirControlla.pfx</PackageCertificateKeyFile>
+    <GenerateTestCertificate>true</GenerateTestCertificate>
     <AppxAutoIncrementPackageRevision>false</AppxAutoIncrementPackageRevision>
     <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -29,6 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

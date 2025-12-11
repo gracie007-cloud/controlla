@@ -1,4 +1,4 @@
-Transform your iPhone or iPad into a powerful wireless mouse and keyboard for your Mac. Control your computer from across the room, give presentations without being tethered to your desk, or type with your voice—all without any dongles or complicated setup.
+Transform your iPhone or iPad into a powerful wireless mouse and keyboard for your Mac or Windows PC. Control your computer from across the room, give presentations without being tethered to your desk, or type with your voice—all without any dongles or complicated setup.
 
 **FREE FEATURES**
 • Virtual joystick mouse control with game-controller precision
@@ -9,30 +9,31 @@ Transform your iPhone or iPad into a powerful wireless mouse and keyboard for yo
 
 **PRO FEATURES ($0.99/month)**
 • Voice typing - dictate text naturally using your iPhone's microphone
-• Full text input - type anywhere on your Mac using your iPhone keyboard
+• Full text input - type anywhere on your computer using your iPhone keyboard
 • Quick keyboard actions (Enter, Backspace, Space)
 • 7-day free trial
 • Family Sharing included
 
 **REAL-WORLD USE CASES**
-• **Presentations**: Advance slides and control your Mac from across the conference room without a clicker
+• **Presentations**: Advance slides and control your computer from across the conference room without a clicker
 • **Voice Dictation**: Compose emails, documents, or messages using speech-to-text from your couch
 • **Media Control**: Navigate streaming apps and control playback from bed or the couch
-• **Home Office**: Use your Mac Mini or Mac Studio connected to your TV without extra peripherals
-• **Accessibility**: Control your Mac when physical keyboards and mice are difficult to use
+• **Home Office**: Use your Mac Mini, Mac Studio, or Windows PC connected to your TV without extra peripherals
+• **Accessibility**: Control your computer when physical keyboards and mice are difficult to use
 • **Emergency Backup**: Lost your mouse or keyboard? Your iPhone becomes an instant replacement
 • **Creative Workflows**: Control design software remotely while reviewing work from a distance
 
 **HOW IT WORKS**
 1. Open Controlla on your iPhone
-2. Select your Mac from discovered devices
+2. Select your computer from discovered devices
 3. Start controlling immediately
 
-No computer software needed. No pairing codes. Just works.
+No pairing codes. Just works.
 
 **REQUIREMENTS**
-• iPhone/iPad and Mac on the same WiFi network
+• iPhone/iPad and computer on the same WiFi network
 • macOS Accessibility permission (granted on first use)
+• Windows Firewall access (allow on first launch)
 
 **PRIVACY**
 • All communication stays on your local network
@@ -40,7 +41,7 @@ No computer software needed. No pairing codes. Just works.
 • No data collected or shared
 • Your data never leaves your WiFi
 
-Built by Christian Okeke for Mac users who want freedom of movement. From your desk to your couch, Controlla keeps you in control.
+From your desk to your couch, Controlla keeps you in control.
 
 **SUBSCRIPTION DETAILS**
 

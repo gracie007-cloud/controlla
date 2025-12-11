@@ -1,4 +1,5 @@
 
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace AirControllaWindows
     {
         private TcpListener? _tcpListener;
         private CancellationTokenSource? _listenerCancellation;
-        private Dictionary<int, TcpClient> _connections = new Dictionary<int, TcpClient>();
+        private readonly Dictionary<int, TcpClient> _connections = new Dictionary<int, TcpClient>();
         private int _nextConnectionId = 0;
         private ServiceDiscovery? _mdnsService;
         private ServiceProfile? _serviceProfile;
@@ -197,16 +198,13 @@ namespace AirControllaWindows
         {
             try
             {
-                // CRITICAL: Disable Nagle's algorithm to eliminate buffering delay
-                // This is the main cause of initial lag - Nagle buffers small packets for up to 200ms
                 client.NoDelay = true;
-
-                // Optimize socket buffer sizes for low-latency input
                 client.SendBufferSize = 8192;
                 client.ReceiveBufferSize = 8192;
 
                 var stream = client.GetStream();
-                var buffer = new byte[65536];
+                var buffer = new byte[8192];
+                var requestDataBuilder = new StringBuilder();
 
                 if (!IsControllerConnected)
                 {
@@ -219,11 +217,10 @@ namespace AirControllaWindows
                     var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
                     if (bytesRead == 0) break;
 
-                    var request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine($"📥 Received: {request.Substring(0, Math.Min(100, request.Length))}...");
-
-                    // Process the HTTP request
-                    await ProcessHttpRequestAsync(request, stream);
+                    requestDataBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+                    
+                    // Process all complete requests in the buffer
+                    while (ProcessBufferedRequests(requestDataBuilder, stream)) { }
                 }
             }
             catch (Exception ex)
@@ -243,18 +240,81 @@ namespace AirControllaWindows
             }
         }
 
-        private async Task ProcessHttpRequestAsync(string request, NetworkStream stream)
+        private bool ProcessBufferedRequests(StringBuilder requestDataBuilder, NetworkStream stream)
+        {
+            string currentRequestData = requestDataBuilder.ToString();
+            var headerEndIndex = currentRequestData.IndexOf("\r\n\r\n");
+            if (headerEndIndex == -1)
+            {
+                return false; // Not enough data for headers yet
+            }
+
+            var headersPart = currentRequestData.Substring(0, headerEndIndex);
+            var headers = headersPart.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var contentLengthHeader = headers.FirstOrDefault(h => h.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase));
+            
+            int contentLength = 0;
+            if (contentLengthHeader != null)
+            {
+                var lengthStr = contentLengthHeader.Split(':')[1].Trim();
+                int.TryParse(lengthStr, out contentLength);
+            }
+
+            var bodyStartIndex = headerEndIndex + 4;
+            if (currentRequestData.Length < bodyStartIndex + contentLength)
+            {
+                return false; // Not enough data for the full body yet
+            }
+
+            var requestString = currentRequestData.Substring(0, bodyStartIndex + contentLength);
+            var jsonBody = currentRequestData.Substring(bodyStartIndex, contentLength);
+
+            // Process this single, complete request
+            // Use Task.Run to avoid blocking the network loop for long, but await a sub-task to ensure response is sent.
+            Task.Run(async () =>
+            {
+                await ProcessHttpRequestAsync(requestString, jsonBody, stream);
+            });
+
+            // Remove the processed request from the builder
+            requestDataBuilder.Remove(0, bodyStartIndex + contentLength);
+
+            return true; // A request was processed, check for more
+        }
+
+        private async Task ProcessHttpRequestAsync(string request, string jsonBody, NetworkStream stream)
         {
             try
             {
-                // Extract JSON from POST body
-                var headerEndIndex = request.IndexOf("\r\n\r\n");
-                if (headerEndIndex == -1) return;
+                // JSON body is now passed in directly, no need to extract it from the request.
+                if (string.IsNullOrWhiteSpace(jsonBody))
+                {
+                    Console.WriteLine("⚠️ Received request with empty body.");
+                    return;
+                }
 
-                var jsonBody = request.Substring(headerEndIndex + 4);
-                if (string.IsNullOrWhiteSpace(jsonBody)) return;
+                // Clean up jsonBody - remove any trailing non-JSON characters (like next HTTP request start)
+                jsonBody = jsonBody.Trim();
 
-                var json = JObject.Parse(jsonBody);
+                JObject json;
+                try
+                {
+                    json = JObject.Parse(jsonBody);
+                }
+                catch (Newtonsoft.Json.JsonReaderException)
+                {
+                    // If parsing fails, it might have extra data - try to extract just the JSON object
+                    int jsonEnd = jsonBody.IndexOf('}');
+                    if (jsonEnd > 0)
+                    {
+                        jsonBody = jsonBody.Substring(0, jsonEnd + 1);
+                        json = JObject.Parse(jsonBody);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
                 // Determine endpoint from request line
                 if (request.Contains("POST /keyboard/text"))
@@ -279,9 +339,13 @@ namespace AirControllaWindows
                 var responseBytes = Encoding.UTF8.GetBytes(response);
                 await stream.WriteAsync(responseBytes, 0, responseBytes.Length);
             }
-            catch (Exception)
+            catch (Newtonsoft.Json.JsonReaderException jsonEx)
             {
-                Console.WriteLine($"❌ Error processing request");
+                Console.WriteLine($"❌ Error parsing JSON body: {jsonEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error processing request: {ex.Message}");
             }
         }
 
