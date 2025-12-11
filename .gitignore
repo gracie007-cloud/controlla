@@ -42,3 +42,9 @@ deployment/AuthKey_*.p8
 *.suo
 *.cache
 .vs/
+
+# Windows Release Files (large files)
+*.msix
+*.appx
+*.zip
+AirControllaWindows/releases/
