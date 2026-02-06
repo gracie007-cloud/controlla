@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Turn your iPhone or iPad into a wireless keyboard and mouse for your Mac or Windows PC. Control your computer from anywhere with smooth joystick navigation.">
+    <meta name="description"
+        content="Turn your iPhone or iPad into a wireless keyboard and mouse for your Mac or Windows PC. Control your computer from anywhere with smooth joystick navigation.">
     <meta name="keywords" content="wireless mouse, iPhone controller, Mac remote, keyboard, joystick, WiFi control">
     <title>Controlla - Wireless Keyboard + Mouse Controller for Mac & Windows</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,8 +79,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 30px) scale(1.1); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, 30px) scale(1.1);
+            }
         }
 
         .hero-content {
@@ -103,8 +112,15 @@
         }
 
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
@@ -119,8 +135,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .subtitle {
@@ -166,7 +189,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -465,14 +488,16 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <div class="badge">🎮 Now Available for Mac & Windows</div>
             <h1>Control Your Computer<br>From Your Pocket</h1>
-            <p class="subtitle">Turn your iPhone or iPad into a wireless keyboard and mouse. Control your Mac or PC from anywhere in the room with smooth, game-inspired precision.</p>
-            
+            <p class="subtitle">Turn your iPhone or iPad into a wireless keyboard and mouse. Control your Mac or PC from
+                anywhere in the room with smooth, game-inspired precision.</p>
+
             <div class="cta-group">
                 <a href="https://apps.apple.com/app/controlla" class="btn btn-primary">
                     <span>📱</span>
@@ -486,13 +511,13 @@
 
             <div class="screenshots">
                 <div class="screenshot-card">
-                    <img src="../deployment/screenshots/en-US/1_iphone67-1.png" alt="Controller Interface">
+                    <img src="images/1_iphone67-1.png" alt="Controller Interface">
                 </div>
                 <div class="screenshot-card">
-                    <img src="../deployment/screenshots/en-US/1_iphone67-2.png" alt="Device Selection">
+                    <img src="images/1_iphone67-2.png" alt="Device Selection">
                 </div>
                 <div class="screenshot-card">
-                    <img src="../deployment/screenshots/en-US/1_iphone67-3.png" alt="Connected View">
+                    <img src="images/1_iphone67-3.png" alt="Connected View">
                 </div>
             </div>
         </div>
@@ -505,19 +530,22 @@
             <div class="feature-card reveal">
                 <span class="feature-icon">🕹️</span>
                 <h3>Joystick Navigation</h3>
-                <p>Game-inspired virtual joystick with precision curve optimization. Move your cursor smoothly with extended low-speed precision control.</p>
+                <p>Game-inspired virtual joystick with precision curve optimization. Move your cursor smoothly with
+                    extended low-speed precision control.</p>
             </div>
 
             <div class="feature-card reveal">
                 <span class="feature-icon">⌨️</span>
                 <h3>Full Keyboard Support</h3>
-                <p>Type on your Mac or PC from your iPhone. Complete keyboard actions including Enter, Backspace, and Space keys.</p>
+                <p>Type on your Mac or PC from your iPhone. Complete keyboard actions including Enter, Backspace, and
+                    Space keys.</p>
             </div>
 
             <div class="feature-card reveal">
                 <span class="feature-icon">🖱️</span>
                 <h3>Mouse Control</h3>
-                <p>Left and right click buttons with smooth cursor movement. Control your computer like a traditional mouse.</p>
+                <p>Left and right click buttons with smooth cursor movement. Control your computer like a traditional
+                    mouse.</p>
             </div>
 
             <div class="feature-card reveal">
@@ -535,7 +563,8 @@
             <div class="feature-card reveal">
                 <span class="feature-icon">🔒</span>
                 <h3>Private & Secure</h3>
-                <p>All communication stays on your local WiFi network. No data collection, no tracking, completely private.</p>
+                <p>All communication stays on your local WiFi network. No data collection, no tracking, completely
+                    private.</p>
             </div>
         </div>
     </section>
@@ -613,4 +642,5 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
+
 </html>
