@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controlla - Wireless Mac Control</title>
+    <meta name="description" content="Turn your iPhone or iPad into a wireless keyboard and mouse for your Mac or Windows PC. Control your computer from anywhere with smooth joystick navigation.">
+    <meta name="keywords" content="wireless mouse, iPhone controller, Mac remote, keyboard, joystick, WiFi control">
+    <title>Controlla - Wireless Keyboard + Mouse Controller for Mac & Windows</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,162 +16,601 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: hsl(250, 84%, 67%);
+            --primary-dark: hsl(250, 84%, 50%);
+            --secondary: hsl(280, 51%, 48%);
+            --accent: hsl(320, 85%, 60%);
+            --dark-bg: hsl(240, 15%, 8%);
+            --card-bg: hsl(240, 12%, 12%);
+            --text-primary: hsl(0, 0%, 98%);
+            --text-secondary: hsl(0, 0%, 75%);
+            --gradient-1: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            --gradient-2: linear-gradient(45deg, hsl(250, 100%, 65%), hsl(280, 100%, 70%));
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 600px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 100%;
+            height: 150%;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -20%;
+            width: 80%;
+            height: 120%;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-            font-weight: 700;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 25px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .subtitle {
-            font-size: 1.5em;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
             margin-bottom: 40px;
-            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideUp 0.8s ease-out 0.4s both;
         }
 
-        .description {
-            font-size: 1.1em;
-            margin-bottom: 40px;
-            opacity: 0.85;
-            line-height: 1.8;
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            animation: slideUp 0.8s ease-out 0.6s both;
         }
 
-        .cta {
-            display: inline-block;
-            background: white;
-            color: #667eea;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             padding: 18px 40px;
-            border-radius: 30px;
-            font-size: 1.2em;
-            font-weight: 600;
-            text-decoration: none;
-            margin-bottom: 30px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .features {
-            margin: 50px 0;
-            text-align: left;
-        }
-
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 10px 40px rgba(138, 99, 210, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(138, 99, 210, 0.5);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
 
-        .feature h3 {
-            font-size: 1.3em;
-            margin-bottom: 8px;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
-        .feature p {
-            opacity: 0.9;
+        /* Screenshot Carousel */
+        .screenshots {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+            animation: slideUp 0.8s ease-out 0.8s both;
+            flex-wrap: wrap;
         }
 
-        .links {
+        .screenshot-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--card-bg);
+            max-width: 250px;
+        }
+
+        .screenshot-card:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .screenshot-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(138, 99, 210, 0.03) 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 60px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(138, 99, 210, 0.3);
+            box-shadow: 0 20px 60px rgba(138, 99, 210, 0.2);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 20px;
+            background: var(--dark-bg);
+        }
+
+        .pricing-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            padding: 50px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(138, 99, 210, 0.15) 0%, rgba(186, 85, 211, 0.15) 100%);
+            border: 2px solid rgba(138, 99, 210, 0.3);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 70px rgba(138, 99, 210, 0.25);
+        }
+
+        .plan-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .plan-price span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+
+        /* Platform Badges */
+        .platforms {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .platform-badges {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .links a {
-            color: white;
+        .platform-badge {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .platform-badge:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(138, 99, 210, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
             text-decoration: none;
-            margin: 0 15px;
-            opacity: 0.8;
-            transition: opacity 0.2s;
+            transition: color 0.3s;
+            font-weight: 500;
         }
 
-        .links a:hover {
-            opacity: 1;
-            text-decoration: underline;
+        .footer-links a:hover {
+            color: var(--primary);
         }
 
-        .footer {
-            margin-top: 50px;
-            opacity: 0.7;
+        .copyright {
+            color: var(--text-secondary);
             font-size: 0.9em;
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.5em;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .screenshots {
+                flex-direction: column;
             }
 
-            .subtitle {
-                font-size: 1.2em;
+            .screenshot-card {
+                max-width: 300px;
             }
+
+            .features-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 Controlla</h1>
-        <p class="subtitle">Turn Your iPhone Into a Wireless Mouse</p>
-
-        <p class="description">
-            Control your Mac from anywhere in the room with game-inspired precision.
-            Free mouse control with joystick navigation. Upgrade to Pro for full keyboard features.
-        </p>
-
-        <a href="https://apps.apple.com/app/controlla" class="cta">Download on the App Store</a>
-
-        <div class="features">
-            <div class="feature">
-                <h3>🕹️ Free Forever</h3>
-                <p>Virtual joystick mouse control with L/R click buttons. No subscription required.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">🎮 Now Available for Mac & Windows</div>
+            <h1>Control Your Computer<br>From Your Pocket</h1>
+            <p class="subtitle">Turn your iPhone or iPad into a wireless keyboard and mouse. Control your Mac or PC from anywhere in the room with smooth, game-inspired precision.</p>
+            
+            <div class="cta-group">
+                <a href="https://apps.apple.com/app/controlla" class="btn btn-primary">
+                    <span>📱</span>
+                    Download on App Store
+                </a>
+                <a href="https://github.com/okekedev/controlla" class="btn btn-secondary">
+                    <span>⭐</span>
+                    View on GitHub
+                </a>
             </div>
 
-            <div class="feature">
-                <h3>⌨️ Pro Features</h3>
-                <p>Full keyboard control with text input. Only $0.99/month with 7-day free trial.</p>
-            </div>
-
-            <div class="feature">
-                <h3>🔒 Private & Secure</h3>
-                <p>All communication stays on your local WiFi. No data collection. No tracking.</p>
-            </div>
-
-            <div class="feature">
-                <h3>📱 Universal App</h3>
-                <p>Works on iPhone, iPad, and Mac. Family Sharing supported.</p>
+            <div class="screenshots">
+                <div class="screenshot-card">
+                    <img src="../deployment/screenshots/en-US/1_iphone67-1.png" alt="Controller Interface">
+                </div>
+                <div class="screenshot-card">
+                    <img src="../deployment/screenshots/en-US/1_iphone67-2.png" alt="Device Selection">
+                </div>
+                <div class="screenshot-card">
+                    <img src="../deployment/screenshots/en-US/1_iphone67-3.png" alt="Connected View">
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="links">
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <span class="feature-icon">🕹️</span>
+                <h3>Joystick Navigation</h3>
+                <p>Game-inspired virtual joystick with precision curve optimization. Move your cursor smoothly with extended low-speed precision control.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <span class="feature-icon">⌨️</span>
+                <h3>Full Keyboard Support</h3>
+                <p>Type on your Mac or PC from your iPhone. Complete keyboard actions including Enter, Backspace, and Space keys.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <span class="feature-icon">🖱️</span>
+                <h3>Mouse Control</h3>
+                <p>Left and right click buttons with smooth cursor movement. Control your computer like a traditional mouse.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <span class="feature-icon">🔍</span>
+                <h3>Auto-Discovery</h3>
+                <p>Automatically finds your Mac or PC on the network using Bonjour. No manual configuration needed.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <span class="feature-icon">⚡</span>
+                <h3>Low Latency</h3>
+                <p>Real-time control with persistent TCP connection. Experience minimal lag for instant response.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <span class="feature-icon">🔒</span>
+                <h3>Private & Secure</h3>
+                <p>All communication stays on your local WiFi network. No data collection, no tracking, completely private.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <h2 class="section-title">Simple Pricing</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="plan-name">Free</h3>
+                <div class="plan-price">$0</div>
+                <ul class="plan-features">
+                    <li>Virtual joystick navigation</li>
+                    <li>Left & right mouse clicks</li>
+                    <li>Auto-discovery</li>
+                    <li>Unlimited devices</li>
+                    <li>No ads, ever</li>
+                </ul>
+                <a href="https://apps.apple.com/app/controlla" class="btn btn-secondary">Get Started</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <h3 class="plan-name">Pro</h3>
+                <div class="plan-price">$0.99<span>/month</span></div>
+                <ul class="plan-features">
+                    <li>Everything in Free</li>
+                    <li>Full keyboard input</li>
+                    <li>Enter, Backspace, Space keys</li>
+                    <li>7-day free trial</li>
+                    <li>Family Sharing supported</li>
+                </ul>
+                <a href="https://apps.apple.com/app/controlla" class="btn btn-primary">Start Free Trial</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platforms Section -->
+    <section class="platforms">
+        <h2 class="section-title">Works Everywhere</h2>
+        <p class="subtitle" style="margin-top: -30px;">Universal app for all your devices</p>
+        <div class="platform-badges">
+            <div class="platform-badge">📱 iPhone</div>
+            <div class="platform-badge">📲 iPad</div>
+            <div class="platform-badge">💻 Mac</div>
+            <div class="platform-badge">🖥️ Windows</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
             <a href="privacy.html">Privacy Policy</a>
             <a href="terms.html">Terms of Use</a>
+            <a href="https://github.com/okekedev/controlla">GitHub</a>
             <a href="mailto:okekec21@gmail.com">Support</a>
         </div>
+        <p class="copyright">© 2026 Christian Okeke. Made with ❤️ for remote workers.</p>
+    </footer>
 
-        <div class="footer">
-            <p>&copy; 2025 Christian Okeke. All rights reserved.</p>
-        </div>
-    </div>
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
